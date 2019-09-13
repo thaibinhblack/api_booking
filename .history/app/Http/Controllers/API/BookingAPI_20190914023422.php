@@ -157,7 +157,7 @@ class BookingAPI extends Controller
            return response()->json($booking, 200);
           
         }
-        return response()->json('rong' ,200);
+        return response()->json($request->all(), 200);
     }
     public function update(Request $request, $id)
     {

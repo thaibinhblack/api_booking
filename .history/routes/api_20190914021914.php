@@ -17,7 +17,7 @@ Route::group(['prefix' => '/v1'], function () {
     Route::get('/booking','API\BookingAPI@index');
     Route::get('/booking/{id}','API\BookingAPI@show');
     Route::post('/booking','API\BookingAPI@store');
-    Route::put('/booking/update','API\BookingAPI@action');
+    Route::post('/booking/update','API\BookingAPI@action');
     Route::delete('/booking/{id}','API\BookingAPI@destroy');
 
     //provice

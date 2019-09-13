@@ -144,24 +144,23 @@ class BookingAPI extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function action(Request $request)
+    public function update(Request $request, $id)
     {
         if($request->get('ACTION_BOOKING') == 2)
         {
-           $booking =  BookingModel::where('UUID_BOOKING', $request->get("UUID_BOOKING"))->orderBy('CREATED_AT','DESC')->update([
-               'ACTION_BOOKING' => $request->get('ACTION_BOOKING'),
-               'UUID_STORE' => $request->get('UUID_STORE'),
-               'NOTE_BOOKING' => $request->get('NOTE_BOOKING'),
-               
-           ]);
-           return response()->json($booking, 200);
-          
+           $booking =  BookingModel::where('UUID_BOOKING', $id)->orderBy('CREATED_AT','DESC')->first();
+           if($booking)
+           {
+               $booking->ACTION_BOOKING = $request->get('ACTION_BOOKING');
+               $booking->UUID_STORE = $request->get('UUID_STORE');
+               $booking->NOTE_BOOKING = $request->get('NOTE_BOOKING');
+               $booking->save();
+               return response()->json('success', 200);
+           }
+           else {
+            return response()->json('not found', 404);
+           }
         }
-        return response()->json('rong' ,200);
-    }
-    public function update(Request $request, $id)
-    {
-       
         // if($request->has("ACTION_BOOKING"))
         // {
         //     if($request->get('ACTION_BOOKING') == 2)

@@ -121,19 +121,9 @@ class BookingAPI extends Controller
                 $booking = BookingModel::where('UUID_BOOKING',$id)->orderBy('CREATED_AT','desc')->first();
                 return response()->json($booking, 200); 
             }
-            else if($request->get('type') == 'done')
-            {
-                $booking = BookingModel::where([
-                    ['booking_bookings.PHONE_BOOKING',$id],
-                    ['booking_bookings.CHECK_BOOKING',1]
-                    ])->orderBy('booking_bookings.CREATED_AT','desc')->first();
-                return response()->json($booking, 200); 
-            }
         }
-        $booking = BookingModel::where([
-            ['booking_bookings.PHONE_BOOKING',$id],
-            ['booking_bookings.CHECK_BOOKING',0]
-            ])->orderBy('booking_bookings.CREATED_AT','desc')->first();
+        $booking = BookingModel::join('booking_store','booking_bookings.UUID_STORE','booking_store.UUID_STORE')
+        ->where('PHONE_BOOKING',$id)->orderBy('CREATED_AT','desc')->first();
         return response()->json($booking, 200); 
     }
 
@@ -170,11 +160,17 @@ class BookingAPI extends Controller
         }
         else if($request->get('ACTION_BOOKING') == 3) {
 
-            $booking =  BookingModel::where('UUID_BOOKING', $request->get("UUID_BOOKING"))->update($request->all());
-            return response()->json($booking, 200);
-        }
-        else {
-            $booking =  BookingModel::where('UUID_BOOKING', $request->get("UUID_BOOKING"))->update($request->all());
+            $booking =  BookingModel::where('UUID_BOOKING', $request->get("UUID_BOOKING"))->update([
+                'ACTION_BOOKING' => $request->get('ACTION_BOOKING'),
+                'UUID_ROOM' => $request->get('UUID_ROOM'),
+                'NOTE_BOOKING' => $request->get('NOTE_BOOKING'),
+                'DATE_BOOK' => $request->get('DATE_BOOK'),
+                'TIME_BOOK' => $request->get('TIME_BOOK'),
+                'ACTION_BOOKING' => $request->get('ACTION_BOOKING'),
+                'CODE' => $request->get('CODE'),
+                'UUID_STYLIST' => $request->get('UUID_STYLIST'),
+                'CHECK_BOOKING' => 1           
+            ]);
             return response()->json($booking, 200);
         }
         return response()->json('rong' ,200);

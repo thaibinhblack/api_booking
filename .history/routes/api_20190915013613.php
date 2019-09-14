@@ -55,25 +55,5 @@ Route::group(['prefix' => '/v1'], function () {
     Route::get('/detail-service/{id}','API\DetailServiceAPI@show');
     Route::post('/detail_service_booking','API\DetailServiceAPI@store');
     Route::delete('/detail-service/{id}','API\DetailServiceAPI@destroy');
-
-    //SMS
-    Route::get('/sms','API\SMSAPI@index');
-    Route::post('/sms','API\SMSAPI@store');
-
-    //EMAIL
-    Route::post('/email','API\EmailAPI@store');
-
-     //user
-     Route::get('/user','API\UserAPI@index');
-     Route::get('/user/{id}','API\UserAPI@show');
-     Route::put('/user/{id}','API\UserAPI@update');
-     Route::post('/user','API\UserAPI@store');
-
-    //question
-    Route::get('/question','API\QuestionAPI@index');
-    Route::post('/question','API\QuestionAPI@store');
-    //answer
-    Route::get('/answer','API\AnswerAPI@index');
-    Route::post('/answer','API\AnswerAPI@store');
       
 });

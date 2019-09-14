@@ -121,19 +121,9 @@ class BookingAPI extends Controller
                 $booking = BookingModel::where('UUID_BOOKING',$id)->orderBy('CREATED_AT','desc')->first();
                 return response()->json($booking, 200); 
             }
-            else if($request->get('type') == 'done')
-            {
-                $booking = BookingModel::where([
-                    ['booking_bookings.PHONE_BOOKING',$id],
-                    ['booking_bookings.CHECK_BOOKING',1]
-                    ])->orderBy('booking_bookings.CREATED_AT','desc')->first();
-                return response()->json($booking, 200); 
-            }
         }
-        $booking = BookingModel::where([
-            ['booking_bookings.PHONE_BOOKING',$id],
-            ['booking_bookings.CHECK_BOOKING',0]
-            ])->orderBy('booking_bookings.CREATED_AT','desc')->first();
+        $booking = BookingModel::join('booking_store','booking_bookings.UUID_STORE','booking_store.UUID_STORE')
+        ->where('PHONE_BOOKING',$id)->orderBy('booking_bookings.CREATED_AT','desc')->first();
         return response()->json($booking, 200); 
     }
 
@@ -171,10 +161,16 @@ class BookingAPI extends Controller
         else if($request->get('ACTION_BOOKING') == 3) {
 
             $booking =  BookingModel::where('UUID_BOOKING', $request->get("UUID_BOOKING"))->update($request->all());
-            return response()->json($booking, 200);
-        }
-        else {
-            $booking =  BookingModel::where('UUID_BOOKING', $request->get("UUID_BOOKING"))->update($request->all());
+            // if($request->has("CODE"))
+            // {
+            //     BookingModel::where('UUID_BOOKING', $request->get("UUID_BOOKING"))->update([
+            //         'CODE' => $request->get('CODE'),
+            //         ])
+            // }
+            
+            // BookingModel::where('UUID_BOOKING', $request->get("UUID_BOOKING"))->update([
+            // 'UUID_STYLIST' => $request->get('UUID_STYLIST'),
+            // ])
             return response()->json($booking, 200);
         }
         return response()->json('rong' ,200);

@@ -121,19 +121,8 @@ class BookingAPI extends Controller
                 $booking = BookingModel::where('UUID_BOOKING',$id)->orderBy('CREATED_AT','desc')->first();
                 return response()->json($booking, 200); 
             }
-            else if($request->get('type') == 'done')
-            {
-                $booking = BookingModel::where([
-                    ['booking_bookings.PHONE_BOOKING',$id],
-                    ['booking_bookings.CHECK_BOOKING',1]
-                    ])->orderBy('booking_bookings.CREATED_AT','desc')->first();
-                return response()->json($booking, 200); 
-            }
         }
-        $booking = BookingModel::where([
-            ['booking_bookings.PHONE_BOOKING',$id],
-            ['booking_bookings.CHECK_BOOKING',0]
-            ])->orderBy('booking_bookings.CREATED_AT','desc')->first();
+        $booking = BookingModel::where('PHONE_BOOKING',$id)->orderBy('CREATED_AT','desc')->first();
         return response()->json($booking, 200); 
     }
 
@@ -167,15 +156,6 @@ class BookingAPI extends Controller
            ]);
            return response()->json($booking, 200);
           
-        }
-        else if($request->get('ACTION_BOOKING') == 3) {
-
-            $booking =  BookingModel::where('UUID_BOOKING', $request->get("UUID_BOOKING"))->update($request->all());
-            return response()->json($booking, 200);
-        }
-        else {
-            $booking =  BookingModel::where('UUID_BOOKING', $request->get("UUID_BOOKING"))->update($request->all());
-            return response()->json($booking, 200);
         }
         return response()->json('rong' ,200);
     }

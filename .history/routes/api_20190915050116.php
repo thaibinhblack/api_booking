@@ -69,11 +69,11 @@ Route::group(['prefix' => '/v1'], function () {
      Route::put('/user/{id}','API\UserAPI@update');
      Route::post('/user','API\UserAPI@store');
 
-    //question
-    Route::get('/question','API\QuestionAPI@index');
-    Route::post('/question','API\QuestionAPI@store');
+        //question
+    Route::get('/question','QuestionController@index');
+    Route::post('/question','QuestionController@store');
     //answer
-    Route::get('/answer','API\AnswerAPI@index');
-    Route::post('/answer','API\AnswerAPI@store');
+    Route::get('/answer','AnswerController@index');
+    Route::post('/answer','AnswerController@store');
       
 });

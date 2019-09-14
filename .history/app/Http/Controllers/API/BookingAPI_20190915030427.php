@@ -121,14 +121,6 @@ class BookingAPI extends Controller
                 $booking = BookingModel::where('UUID_BOOKING',$id)->orderBy('CREATED_AT','desc')->first();
                 return response()->json($booking, 200); 
             }
-            else if($request->get('type') == 'done')
-            {
-                $booking = BookingModel::where([
-                    ['booking_bookings.PHONE_BOOKING',$id],
-                    ['booking_bookings.CHECK_BOOKING',1]
-                    ])->orderBy('booking_bookings.CREATED_AT','desc')->first();
-                return response()->json($booking, 200); 
-            }
         }
         $booking = BookingModel::where([
             ['booking_bookings.PHONE_BOOKING',$id],

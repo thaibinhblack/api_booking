@@ -68,12 +68,5 @@ Route::group(['prefix' => '/v1'], function () {
      Route::get('/user/{id}','API\UserAPI@show');
      Route::put('/user/{id}','API\UserAPI@update');
      Route::post('/user','API\UserAPI@store');
-
-    //question
-    Route::get('/question','API\QuestionAPI@index');
-    Route::post('/question','API\QuestionAPI@store');
-    //answer
-    Route::get('/answer','API\AnswerAPI@index');
-    Route::post('/answer','API\AnswerAPI@store');
       
 });

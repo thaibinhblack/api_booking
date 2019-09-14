@@ -77,7 +77,7 @@ Route::group(['prefix' => '/v1'], function () {
     Route::post('/answer','API\AnswerAPI@store');
 
     //user question answer 
-    Route::get('/user-question/{id}','API\UserQuestionAPI@show');
-    Route::post('/user-question','API\UserQuestionAPI@store');
+    Route::get('/user-question/{id}','UserQuestioAnwserController@show');
+    Route::post('/user-question','UserQuestioAnwserController@store');
       
 });

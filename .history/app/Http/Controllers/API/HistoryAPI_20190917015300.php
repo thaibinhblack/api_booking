@@ -4,9 +4,8 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\model\UserQuestionAnwser;
 
-class UserQuestionAPI extends Controller
+class HistoryAPI extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,16 +13,6 @@ class UserQuestionAPI extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-       
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
     {
         //
     }
@@ -36,14 +25,7 @@ class UserQuestionAPI extends Controller
      */
     public function store(Request $request)
     {
-        $questions = (explode(",",$request->get('UUID_ANWSER')));
-        foreach ($questions as $question) {
-            UserQuestionAnwser::create([
-                'UUID_BOOKING' => $request->get('UUID_BOOKING'),
-                'UUID_ANWSER' => $question
-            ]);
-        }
-        return response()->json($request->all(), 200);
+        //
     }
 
     /**
@@ -53,20 +35,6 @@ class UserQuestionAPI extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-        $result = UserQuestionAnwser::join('booking_answer','booking_user_question_anwser.UUID_ANWSER', 'booking_answer.UUID_ANWSER')
-        ->join('booking_question', 'booking_answer.UUID_QUESTION','booking_question.UUID_QUESTION')
-        ->where('UUID_BOOKING',$id)->get();
-        return response()->json($result, 200);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
     {
         //
     }
@@ -80,7 +48,7 @@ class UserQuestionAPI extends Controller
      */
     public function update(Request $request, $id)
     {
-        
+        //
     }
 
     /**

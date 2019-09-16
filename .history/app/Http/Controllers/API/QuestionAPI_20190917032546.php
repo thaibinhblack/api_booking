@@ -4,9 +4,12 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\model\QuestionModel;
+use App\model\AnswerModel;
 use App\model\UserQuestionAnwser;
-
-class UserQuestionAPI extends Controller
+use App\model\UserModel;
+use App\model\HistoryModel;
+class QuestionAPI extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +18,8 @@ class UserQuestionAPI extends Controller
      */
     public function index()
     {
-       
+        $question = QuestionModel::all();
+        return response()->json($question, 200);
     }
 
     /**
@@ -36,14 +40,7 @@ class UserQuestionAPI extends Controller
      */
     public function store(Request $request)
     {
-        $questions = (explode(",",$request->get('UUID_ANWSER')));
-        foreach ($questions as $question) {
-            UserQuestionAnwser::create([
-                'UUID_BOOKING' => $request->get('UUID_BOOKING'),
-                'UUID_ANWSER' => $question
-            ]);
-        }
-        return response()->json($request->all(), 200);
+        $question = QuestionModel::create($request->all());
     }
 
     /**
@@ -54,10 +51,7 @@ class UserQuestionAPI extends Controller
      */
     public function show($id)
     {
-        $result = UserQuestionAnwser::join('booking_answer','booking_user_question_anwser.UUID_ANWSER', 'booking_answer.UUID_ANWSER')
-        ->join('booking_question', 'booking_answer.UUID_QUESTION','booking_question.UUID_QUESTION')
-        ->where('UUID_BOOKING',$id)->get();
-        return response()->json($result, 200);
+        
     }
 
     /**
@@ -80,7 +74,7 @@ class UserQuestionAPI extends Controller
      */
     public function update(Request $request, $id)
     {
-        
+        //
     }
 
     /**
@@ -89,8 +83,32 @@ class UserQuestionAPI extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id,Request $request)
     {
-        //
+        if($request->has('api_token'))
+        {
+            $user = UserModel::where("USER_TOKEN",$request->get('api_token'))->first();
+            if($user)
+            {
+                $answers = AnswerModel::where("UUID_QUESTION",$id)->get();
+                foreach ($answers as $answer) {
+                    UserQuestionAnwser::where("UUID_ANWSER",$answer["UUID_ANWSER"])->delete();
+                }
+                $qusstion_delete = QuestionModel::where("UUID_QUESTION",$id)->frist();
+                $question = QuestionModel::where("UUID_QUESTION",$id)->delete();
+                
+                HistoryModel::create([
+                    "UUID_USER" => $user->UUID_USER,
+                    "UUID_HISTORY" => Str::uuid(),
+                    "NAME_HISTORY" => "Câu hỏi",
+                    "CONTENT_HISTORY" => $user->EMAIL. ' xóa câu hỏi '.$qusstion_delete->NAME_QUESTION
+                ]);
+                return response()->json('success', 200);
+            }
+            
+            return response()->json('error', 401);
+        }
+       
+
     }
 }

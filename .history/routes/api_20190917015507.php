@@ -76,12 +76,9 @@ Route::group(['prefix' => '/v1'], function () {
     //question
     Route::get('/question','API\QuestionAPI@index');
     Route::post('/question','API\QuestionAPI@store');
-    Route::post('/question/{id}/update','API\QuestionAPI@update');
-    Route::delete('/question/{id}','API\QuestionAPI@destroy');
     //answer
     Route::get('/answer','API\AnswerAPI@index');
     Route::post('/answer','API\AnswerAPI@store');
-    Route::post('/answer/{id}/update','API\AnswerAPI@update');
 
     //user question answer 
     Route::get('/user-question/{id}','API\UserQuestionAPI@show');

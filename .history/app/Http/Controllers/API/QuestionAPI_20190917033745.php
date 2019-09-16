@@ -76,8 +76,7 @@ class QuestionAPI extends Controller
      */
     public function update(Request $request, $id)
     {
-        $question = QuestionModel::where("UUID_QUESTION",$id)->update($request->all());
-        return response()->json($question, 200);
+        //
     }
 
     /**

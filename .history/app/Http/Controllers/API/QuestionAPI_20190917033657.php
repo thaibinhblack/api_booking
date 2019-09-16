@@ -9,8 +9,6 @@ use App\model\AnswerModel;
 use App\model\UserQuestionAnwser;
 use App\model\UserModel;
 use App\model\HistoryModel;
-use Illuminate\Support\Str;
-
 class QuestionAPI extends Controller
 {
     /**
@@ -76,8 +74,7 @@ class QuestionAPI extends Controller
      */
     public function update(Request $request, $id)
     {
-        $question = QuestionModel::where("UUID_QUESTION",$id)->update($request->all());
-        return response()->json($question, 200);
+        //
     }
 
     /**
@@ -92,14 +89,14 @@ class QuestionAPI extends Controller
         {
             
             $user = UserModel::where('USER_TOKEN', $request->get('api_token'))->first();
-           
+            return response()->json($user, 200);
             if($user)
             {
                 $answers = AnswerModel::where("UUID_QUESTION",$id)->get();
                 foreach ($answers as $answer) {
                     UserQuestionAnwser::where("UUID_ANWSER",$answer["UUID_ANWSER"])->delete();
                 }
-                $qusstion_delete = QuestionModel::where("UUID_QUESTION",$id)->first();
+                $qusstion_delete = QuestionModel::where("UUID_QUESTION",$id)->frist();
                 $question = QuestionModel::where("UUID_QUESTION",$id)->delete();
                 
                 HistoryModel::create([

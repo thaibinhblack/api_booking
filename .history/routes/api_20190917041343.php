@@ -81,7 +81,6 @@ Route::group(['prefix' => '/v1'], function () {
     //answer
     Route::get('/answer','API\AnswerAPI@index');
     Route::post('/answer','API\AnswerAPI@store');
-    Route::post('/answer/{id}/update','API\AnswerAPI@update');
 
     //user question answer 
     Route::get('/user-question/{id}','API\UserQuestionAPI@show');

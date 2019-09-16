@@ -9,8 +9,6 @@ use App\model\AnswerModel;
 use App\model\UserQuestionAnwser;
 use App\model\UserModel;
 use App\model\HistoryModel;
-use Illuminate\Support\Str;
-
 class QuestionAPI extends Controller
 {
     /**
@@ -76,8 +74,7 @@ class QuestionAPI extends Controller
      */
     public function update(Request $request, $id)
     {
-        $question = QuestionModel::where("UUID_QUESTION",$id)->update($request->all());
-        return response()->json($question, 200);
+        //
     }
 
     /**

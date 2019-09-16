@@ -99,40 +99,7 @@ class ServiceAPI extends Controller
      */
     public function update(Request $request, $id)
     {
-        if($request->has('api_token'))
-        {
-            $user = UserModel::where("USER_TOKEN",$request->get('api_token'))->first();
-            if($user)
-            {
-                $data = $request->all();
-                if($request->has('IMAGE_SERVICE'))
-                {
-                    $file = $request->file('IMAGE_SERVICE');
-                    $name = $file->getClientOriginalName();
-                    $file->move(public_path().'/upload/services/', $file->getClientOriginalName());
-                    $path = 'upload/services/'.$name;
-                    $data["IMAGE_SERVICE"] = $path;
-                    ServiceModel::where("UUID_SERVICE",$id)->update([
-                        "NAME_SERVICE" => $data["NAME_SERVICE"],
-                        "IMAGE_SERVICE" => $data["IMAGE_SERVICE"]
-                    ]);
-                }
-                else {
-                    ServiceModel::where("UUID_SERVICE",$id)->update([
-                        "NAME_SERVICE" => $data["NAME_SERVICE"]
-                    ]);
-                }
-                HistoryModel::create([
-                    "UUID_USER" => $user->UUID_USER,
-                    "UUID_HISTORY" => Str::uuid(),
-                    "NAME_HISTORY" => "Dịch vụ",
-                    "CONTENT_HISTORY" => $user->EMAIL.' vừa cập nhật dịch vụ '.$data["NAME_SERVICE"]
-                ]);
-                return response()->json('success', 200);
-               
-            }
-            return response()->json('error', 401);
-        }
+        
     }
 
     /**

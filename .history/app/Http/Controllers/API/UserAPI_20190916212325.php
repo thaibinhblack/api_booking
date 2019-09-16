@@ -195,6 +195,7 @@ class UserAPI extends Controller
                     "NAME_HISTORY" => "user",
                     "CONTENT_HISTORY" => $user->EMAIL.' vừa xóa user '.$request->get('email')
                 ]);
+                
                 return response()->json($user_delete, 200);
             }
             else {

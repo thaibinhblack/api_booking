@@ -4,10 +4,11 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\model\RoomModel;
-use App\model\StoreModel;
-
-class RoomAPI extends Controller
+use App\model\ServiceModel;
+use App\model\UserModel;
+use App\model\HistoryModel;
+use Illuminate\Support\Str;
+class ServiceAPI extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,12 +17,8 @@ class RoomAPI extends Controller
      */
     public function index(Request $request)
     {
-        if($request->has('type') && $request->has('value'))
-        {
-            $room = RoomModel::where($request->get('type'), $request->get('value'))->orderBy('CREATED_AT','asc')->get();
-            return response()->json($room, 200);
-        }
-        
+        $service = ServiceModel::all();
+        return response()->json($service, 200);
     }
 
     /**
@@ -42,12 +39,14 @@ class RoomAPI extends Controller
      */
     public function store(Request $request)
     {
-        $room = RoomModel::create($request->all());
-        $rooms = RoomModel::where("UUID_STORE",$request->get("UUID_STORE"))->get();
-        StoreModel::where("UUID_STORE",$request->get("UUID_STORE"))->update([
-            "NUMBER_ROOM" => count($rooms)
-        ]);
-        return response()->json(count($rooms), 200);
+        $file = $request->file('IMAGE_SERVICE');
+        $name = $file->getClientOriginalName();
+        $file->move(public_path().'/upload/services/', $file->getClientOriginalName());
+        $path = 'upload/services/'.$name;
+        $data = $request->all();
+        $data["IMAGE_SERVICE"] = $path;
+        $service = ServiceModel::create($data);
+        return response()->json($service, 200);
     }
 
     /**
@@ -56,15 +55,9 @@ class RoomAPI extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id, Request $request)
+    public function show($id)
     {
-        if($request->has('store'))
-        {
-            $room = RoomModel::join('booking_store','booking_room.UUID_STORE','booking_store.UUID_STORE')->join('booking_country','booking_store.UUID_COUNTRY','booking_country.UUID_COUNTRY')
-            ->join('booking_province','booking_country.UUID_PROVINCE','booking_province.UUID_PROVINCE')->where('UUID_ROOM',$id)->first();
-            return response()->json($room, 200);
-        }
-        
+        //
     }
 
     /**
@@ -87,7 +80,7 @@ class RoomAPI extends Controller
      */
     public function update(Request $request, $id)
     {
-        RoomModel::where('UUID_ROOM',$id)->update($request->all());
+        
     }
 
     /**
@@ -98,7 +91,6 @@ class RoomAPI extends Controller
      */
     public function destroy($id)
     {
-
+        //
     }
 }
-

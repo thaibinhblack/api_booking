@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 use App\model\UserModel;
 use App\model\HistoryModel;
 use Illuminate\Support\Str;
-use App\model\BookingModel;
+
 class StoreAPI extends Controller
 {
     /**
@@ -51,15 +51,7 @@ class StoreAPI extends Controller
             $user = UserModel::where('USER_TOKEN',$request->get('api_token'))->first();
             if($user)
             {
-                $store = StoreModel::create([
-                    "UUID_STORE" => $request->get("UUID_STORE"),
-                    "NAME_STORE" => $request->get('NAME_STORE'),
-                    "NUMBER_ROOM" => $request->get("NUMBER_ROOM"),
-                    "PHONE_STORE" => $request->get("PHONE_STORE"),
-                    "UUID_PROVINCE" => $request->get('UUID_PROVINCE'),
-                    "UUID_COUNTRY" => $request->get("UUID_COUNTRY"),
-                    "ADDRESS_STORE" => $request->get("ADDRESS_STORE"),
-                ]);
+                $store = StoreModel::create($request->all());
                 HistoryModel::create([
                     "UUID_USER" => $user->UUID_USER,
                     "UUID_HISTORY" => Str::uuid(),
@@ -124,7 +116,7 @@ class StoreAPI extends Controller
                     "UUID_USER" => $user->UUID_USER,
                     "UUID_HISTORY" => Str::uuid(),
                     "NAME_HISTORY" => "store",
-                    "CONTENT_HISTORY" => $user->EMAIL.' vừa cập nhật chi nhánh '.$request->get("NAME_STORE") 
+                    "CONTENT_HISTORY" => $user->EMAIL ' vừa cập nhật chi nhánh '.$request->get("NAME_STORE") 
                 ]);
                 return response()->json('success', 200);
             }
@@ -154,8 +146,8 @@ class StoreAPI extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id,Request $request)
+    public function destroy($id)
     {
-        
+        //
     }
 }

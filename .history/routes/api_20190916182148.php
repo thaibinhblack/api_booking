@@ -35,19 +35,17 @@ Route::group(['prefix' => '/v1'], function () {
      Route::get('/store','API\StoreAPI@index');
      Route::get('/store/{id}','API\StoreAPI@show');
      Route::post('/store','API\StoreAPI@store');
-     Route::post('/store/{id}/update','API\StoreAPI@update');
-     Route::delete('/store/{id}','API\StoreAPI@destroy');
+     Route::put('/store/{id}','API\StoreAPI@update');
 
      //service 
     Route::get('/service','API\ServiceAPI@index');
     Route::post('/service', 'API\ServiceAPI@store');
-    Route::post('/service/{id}/update','API\ServiceAPI@update');
 
      //room
      Route::get('/room','API\RoomAPI@index');
      Route::get('/room/{id}','API\RoomAPI@show');
      Route::post("/room",'API\RoomAPI@store');
-     Route::post("/room/{id}/update",'API\RoomAPI@update');
+     Route::put("/room",'API\RoomAPI@update');
 
     //stylist
     Route::get('/stylist','API\StylistAPI@index');
@@ -69,7 +67,7 @@ Route::group(['prefix' => '/v1'], function () {
      //user
     Route::get('/user/info','API\UserAPI@getUserByToken');
     Route::get('/user/{id}','API\UserAPI@show');
-    Route::get('/user/{id}/update','API\UserAPI@update');
+    Route::post('/user/{id}','API\UserAPI@update');
     Route::post('/user','API\UserAPI@store');
     Route::get('/user','API\UserAPI@index');
     Route::delete('/user/{id}','API\UserAPI@destroy');

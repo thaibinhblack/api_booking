@@ -47,7 +47,7 @@ class RoomAPI extends Controller
         StoreModel::where("UUID_STORE",$request->get("UUID_STORE"))->update([
             "NUMBER_ROOM" => count($rooms)
         ]);
-        return response()->json(count($rooms), 200);
+        return response()->json($room, 200);
     }
 
     /**

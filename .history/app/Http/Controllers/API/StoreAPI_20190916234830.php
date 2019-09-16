@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 use App\model\UserModel;
 use App\model\HistoryModel;
 use Illuminate\Support\Str;
-use App\model\BookingModel;
+
 class StoreAPI extends Controller
 {
     /**
@@ -154,8 +154,8 @@ class StoreAPI extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id,Request $request)
+    public function destroy($id)
     {
-        
+        //
     }
 }

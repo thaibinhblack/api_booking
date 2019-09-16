@@ -154,22 +154,27 @@ class UserAPI extends Controller
     {
         if($request->has('api_token'))
         {
-            $user = UserModel::where("USER_TOKEN",$request->get('api_token'))->first();
+            $user = UserModel::where([
+                ["USER_TOKEN",$request->get('api_token')],
+                ])->first();
             if($user)
             {
-                if($request->has('PASSWORD'))
-                {
-                    UserModel::where('UUID_USER',$id)->update([
-                        "PASSWORD" => Hash::make( $request->get("PASSWORD"))
-                    ]);
-                    return response()->json('success', 200);
-                }
-                
+                UserModel::where('UUID_USER',$id)->udpate([
+                    "PASSWORD" => Hash::make( $request->get("PASSWORD"))
+                ]);
+                return response()->json('success', 200);
             }
             else {
                 return response()->json('error', 401);
             }
         }
+        $data = $request->all();
+        if($request->has('PASSWORD'))
+        {
+            $data["PASSWORD"] = Hash::make($data["PASSWORD"]);
+        }
+        $user = UserModel::where("UUID_USER",$id)->update($data);
+        return response()->json($request->all(), 200);
     }
 
     /**
@@ -187,7 +192,6 @@ class UserAPI extends Controller
                 ["UUID_RULE", 'manager-2019']])->first();
             if($user)
             {
-                HistoryModel::where("UUID_USER",$id)->delete();
                 $user_delete = UserModel::where("UUID_USER", $id)->delete();
                 HistoryModel::create([
                     "UUID_USER" => $user->UUID_USER,

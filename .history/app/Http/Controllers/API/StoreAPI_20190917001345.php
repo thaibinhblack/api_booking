@@ -156,6 +156,15 @@ class StoreAPI extends Controller
      */
     public function destroy($id,Request $request)
     {
-        
+        if($request->has('api_token'))
+        {
+            $user = UserModel::where([
+                ["USER_TOKEN",$request->get("api_token")],
+                ["UUID_RULE","manager-2019"]])->first();
+            if($user)
+            {
+                
+            }
+        }
     }
 }

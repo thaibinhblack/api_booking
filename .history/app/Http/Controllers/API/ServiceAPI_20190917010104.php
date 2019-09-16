@@ -126,7 +126,7 @@ class ServiceAPI extends Controller
                     "UUID_USER" => $user->UUID_USER,
                     "UUID_HISTORY" => Str::uuid(),
                     "NAME_HISTORY" => "Dịch vụ",
-                    "CONTENT_HISTORY" => $user->EMAIL.' vừa cập nhật dịch vụ '.$data["NAME_SERVICE"]
+                    "CONTENT_HISTORY" => $user->EMAIL. ' vừa cập nhật dịch vụ '$data["NAME_SERVICE"]
                 ]);
                 return response()->json('success', 200);
                

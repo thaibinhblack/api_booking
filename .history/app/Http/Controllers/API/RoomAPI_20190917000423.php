@@ -5,8 +5,6 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\model\RoomModel;
-use App\model\StoreModel;
-
 class RoomAPI extends Controller
 {
     /**
@@ -43,11 +41,7 @@ class RoomAPI extends Controller
     public function store(Request $request)
     {
         $room = RoomModel::create($request->all());
-        $rooms = RoomModel::where("UUID_STORE",$request->get("UUID_STORE"))->get();
-        StoreModel::where("UUID_STORE",$request->get("UUID_STORE"))->update([
-            "NUMBER_ROOM" => count($rooms)
-        ]);
-        return response()->json(count($rooms), 200);
+        return response()->json($room, 200);
     }
 
     /**
@@ -98,7 +92,7 @@ class RoomAPI extends Controller
      */
     public function destroy($id)
     {
-
+        
     }
 }
 

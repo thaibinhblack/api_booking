@@ -187,7 +187,7 @@ class UserAPI extends Controller
                 ["UUID_RULE", 'manager-2019']])->first();
             if($user)
             {
-                HistoryModel::where("UUID_USER",$id)->delete();
+                HistoryModel::where("UUID_USER",$id)->delete()
                 $user_delete = UserModel::where("UUID_USER", $id)->delete();
                 HistoryModel::create([
                     "UUID_USER" => $user->UUID_USER,
@@ -195,6 +195,7 @@ class UserAPI extends Controller
                     "NAME_HISTORY" => "user",
                     "CONTENT_HISTORY" => $user->EMAIL.' vừa xóa user '.$request->get('email')
                 ]);
+                
                 return response()->json($user_delete, 200);
             }
             else {

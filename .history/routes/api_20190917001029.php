@@ -41,7 +41,6 @@ Route::group(['prefix' => '/v1'], function () {
      //service 
     Route::get('/service','API\ServiceAPI@index');
     Route::post('/service', 'API\ServiceAPI@store');
-    Route::post('/service/{id}/update','API\ServiceAPI@update');
 
      //room
      Route::get('/room','API\RoomAPI@index');

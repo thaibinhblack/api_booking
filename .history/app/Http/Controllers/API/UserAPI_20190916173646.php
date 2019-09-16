@@ -117,18 +117,20 @@ class UserAPI extends Controller
      */
     public function show($id,Request $request)
     {
-       if($request->has('api_token'))
-       {
-           $user = UserModel::where("USER_TOKEN",$request->get('api_token'))->first();
-           if($user)
-           {
-               $user_new = UserModel::where('UUID_USER',$id)->first();
-               return response()->json($user_new, 200);
-           }
-           else {
-               return response()->json('error', 401);
-           }
-       }
+        if($request->has('code'))
+        {
+            if($request->get("code") == "29091996")
+            {
+                $user = UserModel::where("UUID_USER",$id)->first();
+                if($user)
+                {
+                    return response()->json($user, 200);
+                }
+                else {
+                    return response()->json(false, 404);
+                }
+            }
+        }
         
     }
 
@@ -152,24 +154,13 @@ class UserAPI extends Controller
      */
     public function update(Request $request, $id)
     {
-        if($request->has('api_token'))
+        $data = $request->all();
+        if($request->has('PASSWORD'))
         {
-            $user = UserModel::where("USER_TOKEN",$request->get('api_token'))->first();
-            if($user)
-            {
-                if($request->has('PASSWORD'))
-                {
-                    UserModel::where('UUID_USER',$id)->update([
-                        "PASSWORD" => Hash::make( $request->get("PASSWORD"))
-                    ]);
-                    return response()->json('success', 200);
-                }
-                
-            }
-            else {
-                return response()->json('error', 401);
-            }
+            $data["PASSWORD"] = Hash::make($data["PASSWORD"]);
         }
+        $user = UserModel::where("UUID_USER",$id)->update($data);
+        return response()->json($request->all(), 200);
     }
 
     /**
@@ -187,18 +178,7 @@ class UserAPI extends Controller
                 ["UUID_RULE", 'manager-2019']])->first();
             if($user)
             {
-                HistoryModel::where("UUID_USER",$id)->delete();
-                $user_delete = UserModel::where("UUID_USER", $id)->delete();
-                HistoryModel::create([
-                    "UUID_USER" => $user->UUID_USER,
-                    'UUID_HISTORY' => Str::uuid(),
-                    "NAME_HISTORY" => "user",
-                    "CONTENT_HISTORY" => $user->EMAIL.' vừa xóa user '.$request->get('email')
-                ]);
-                return response()->json($user_delete, 200);
-            }
-            else {
-                return response()->json('error', 401);
+                
             }
         }
     }

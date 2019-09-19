@@ -55,7 +55,7 @@ class UserAPI extends Controller
         }
         else if($request->has("UUID_COUNTRY"))
         {
-            $user = UserModel::where("UUID_COUNTRY",$request->UUID_COUNTRY)->select("EMAIL")->first();
+            $user = UserModel::where("UUID_COUNTRY",$request->UUID_COUNTRY)->select("EMAIL")->get();
             return response()->json($user);
         }
       

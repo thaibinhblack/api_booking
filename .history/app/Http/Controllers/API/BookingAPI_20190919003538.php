@@ -10,7 +10,7 @@ use DateTime;
 use App\model\UserModel;
 use App\model\HistoryModel;
 use Illuminate\Support\Str;
-use App\model\CodeModel;
+
 class BookingAPI extends Controller
 {
     /**
@@ -44,7 +44,7 @@ class BookingAPI extends Controller
         else if($request->has("getdata")){
             $booking = BookingModel::where([
                 ["PHONE_BOOKING",$request->get("getdata")],
-                ["CHECK_BOOKING",2]])->select("EMAIL_BOOKING","NAME_BOOKING")->orderBy("CREATED_AT","DESC")->first();
+                ["CHECK_BOOKING",2]])->select("EMAIL_BOOKING","PHONE_BOOKING")->first();
             return response()->json($booking, 200);
         }
         // else if($request->has('room'))
@@ -59,17 +59,10 @@ class BookingAPI extends Controller
             
            
         // }
-        else if($request->has('api_token'))
-        {
-            $user = UserModel::where('USER_TOKEN',$request->get("api_token"))->first();
-            if($user)
-            {
-                $booking = BookingModel::orderBy('CREATED_AT','DESC')->get();
-                return response()->json($booking, 200);
-            }
-            return response()->json(false, 401);
-        }
-        
+        $booking = BookingModel::orderBy('CREATED_AT','DESC')->get();
+       
+
+        return response()->json($booking, 200);
     }
     public function check(Request $request)
     {
@@ -211,14 +204,6 @@ class BookingAPI extends Controller
         else if($request->get('ACTION_BOOKING') == 3) {
 
             $booking =  BookingModel::where('UUID_BOOKING', $request->get("UUID_BOOKING"))->update($request->all());
-            $booking_check =  BookingModel::where('UUID_BOOKING', $request->get("UUID_BOOKING"))->select("CODE")->first();
-            if($booking_check->CODE != null)
-            {
-                $code = CodeModel::where("NAME_CODE",$booking_check->CODE)->first();
-                CodeModel::where("NAME_CODE",$booking_check->CODE)->update([
-                    "SL_CODED" => $code->SL_CODED -1
-                ]);
-            }
             return response()->json($booking, 200);
         }
         else {

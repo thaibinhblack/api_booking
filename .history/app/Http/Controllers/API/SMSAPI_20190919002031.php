@@ -5,8 +5,6 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Nexmo;
-use App\model\HistoryModel;
-use Illuminate\Support\Str;
 class SMSAPI extends Controller
 {
     /**
@@ -42,26 +40,6 @@ class SMSAPI extends Controller
      */
     public function store(Request $request)
     {
-        if($request->has('api_token'))
-        {
-            $usser = UserModel::where("USER_TOKEN",$request->get('api_token'))->first();
-            if($usser)
-            {
-                $nexmo = app('Nexmo\Client');
-                $nexmo->message()->send([
-                    'to'   => '84'.$request->get('phone'),
-                    'from' => '16105552344',
-                    'text' => $request->get('message')
-                ]);
-                HistoryModel::create([
-                    "UUID_USER" => $usser->UUID_USER,
-                    "UUID_HISTORY" => Str::uuid(),
-                    "NAME_HISTORY" => "SMS",
-                    "CONTENT_HISTORY" => $usser->EMAIL. 'gửi sms cho thuê bao '.$request->get('phone').' với nội dung: '.$request->get('message')                
-                    ]);
-                return response()->json($nexmo, 200);
-            }
-        }
         $nexmo = app('Nexmo\Client');
         $nexmo->message()->send([
             'to'   => '84'.$request->get('phone'),

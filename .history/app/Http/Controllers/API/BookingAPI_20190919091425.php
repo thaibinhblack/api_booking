@@ -10,7 +10,7 @@ use DateTime;
 use App\model\UserModel;
 use App\model\HistoryModel;
 use Illuminate\Support\Str;
-use App\model\CodeModel;
+
 class BookingAPI extends Controller
 {
     /**
@@ -211,14 +211,6 @@ class BookingAPI extends Controller
         else if($request->get('ACTION_BOOKING') == 3) {
 
             $booking =  BookingModel::where('UUID_BOOKING', $request->get("UUID_BOOKING"))->update($request->all());
-            $booking_check =  BookingModel::where('UUID_BOOKING', $request->get("UUID_BOOKING"))->select("CODE")->first();
-            if($booking_check->CODE != null)
-            {
-                $code = CodeModel::where("NAME_CODE",$booking_check->CODE)->first();
-                CodeModel::where("NAME_CODE",$booking_check->CODE)->update([
-                    "SL_CODED" => $code->SL_CODED -1
-                ]);
-            }
             return response()->json($booking, 200);
         }
         else {

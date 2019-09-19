@@ -216,7 +216,7 @@ class BookingAPI extends Controller
             {
                 $code = CodeModel::where("NAME_CODE",$booking_check->CODE)->first();
                 CodeModel::where("NAME_CODE",$booking_check->CODE)->update([
-                    "SL_CODED" => $code->SL_CODED -1
+                    "SL_CODED": $code->SL_CODED -1
                 ]);
             }
             return response()->json($booking, 200);

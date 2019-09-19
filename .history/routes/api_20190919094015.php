@@ -51,7 +51,6 @@ Route::group(['prefix' => '/v1'], function () {
 
     //stylist
     Route::get('/stylist','API\StylistAPI@index');
-    Route::get('/stylist/{id}','API\StylistAPI@show');
     Route::post('/stylist','API\StylistAPI@store');
     Route::post('/stylist/{id}/update','API\StylistAPI@update');
 

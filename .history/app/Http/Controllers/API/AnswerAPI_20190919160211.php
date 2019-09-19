@@ -61,13 +61,12 @@ class AnswerAPI extends Controller
                         "UUID_HISTORY" => Str::uuid(),
                         "NAME_HISTORY" => "anwser",
                         "CONTETN_HISTORY" => $user->EMAIL.' tạo câu trả lời '.$request->GET("NAME_ANWSER")
-                    ]);
-                    return response()->json($answer, 200);
+                    ])
                 }
-                return response()->json(false, 400);
             }
-            return response()->json(false, 401);
         }
+        $answer = AnswerModel::create($request->all());
+        return response()->json($answer, 200);
     }
 
     /**
@@ -101,28 +100,8 @@ class AnswerAPI extends Controller
      */
     public function update(Request $request, $id)
     {
-        if($request->has('token'))
-        {
-            $user = UserModel::where("USER_TOKEN",$request->get("token"));
-            if($user)
-            {
-                $answer =  AnswerModel::where("UUID_ANWSER",$id)->update([
-                    "NAME_ANWSER" => $request->get("NAME_ANWSER")
-                ]);
-                if($answer)
-                {
-                    HistoryModel::create([
-                        "UUID_USER" => $user->UUID_USER,
-                        "UUID_HISTORY" => Str::uuid(),
-                        "NAME_HISTORY" => "anwser",
-                        "CONTENT_HISTORY" => $user->EMAIL.' cập nhật câu trả lời '.$request->get("NAME_ANWSER")
-                    ]);
-                    return response()->json('success', 200);
-                }
-                return response()->json(false, 400);
-            }
-            return response()->json(false, 401);
-        }
+        $answer = AnswerModel::where("UUID_ANSWER",$id)->update($request->all());
+        return response()->json($answer, 200);
     }
 
     /**
@@ -131,27 +110,8 @@ class AnswerAPI extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id,Request $request)
+    public function destroy($id)
     {
-        if($request->has('token'))
-        {
-            $user = UserModel::where("USER_TOKEN",$request->get("token"));
-            if($user)
-            {   $answer_delete =  AnswerModel::where("UUID_ANWSER",$id)->first();
-                $answer =  AnswerModel::where("UUID_ANWSER",$id)->delete(); 
-                if($answer)
-                {
-                    HistoryModel::create([
-                        "UUID_USER" => $user->UUID_USER,
-                        "UUID_HISTORY" => Str::uuid(),
-                        "NAME_HISTORY" => "anwser",
-                        "CONTENT_HISTORY" => $user->EMAIL.' xóa câu trả lời '.$answer_delete->NAME_HISTORY
-                    ]);
-                    return response()->json('success', 200);
-                }
-                return response()->json(false, 400);
-            }
-            return response()->json(false, 401);
-        }
+        //
     }
 }

@@ -41,13 +41,13 @@ class CountryAPI extends Controller
     {
         if($request->has('api_token'))
         {
-            $user = UserModel::where("USER_TOKEN",$request->get("api_token"))->first();
+            $user = UserModel::where("USER_TOKEN",$request->get("api_token"))->first()
             if($user)
             {
                 $country = CountryModel::create([
                     "UUID_COUNTRY" => $request->get("UUID_COUNTRY"),
                     "UUID_PROVINCE" => $request->get("UUID_PROVINCE"),
-                    "NAME_COUNTRY" => $request->get("NAME_COUNTRY")
+                    "NAME_COUNTRY" => $request->get()"NAME_COUNTRY"
                 ]);
                 if($country)
                 {
@@ -55,7 +55,7 @@ class CountryAPI extends Controller
                         "UUID_USER" => $user->UUID_USER,
                         "UUID_HISTORY" => Str::uuid(),
                         "NAME_HISTORY" => "country",
-                        "CONTENT_HISTORY" => $user->EMAIL.' thêm quận/huyện '.$request->get("NAME_COUNTRY")
+                        "COUNTENT_HISTORY" => $user->EMAIL.' thêm quận/huyện '.$request->get("NAME_COUNTRY")
                     ]);
                     return response()->json('success', 200);
                 }
@@ -63,7 +63,8 @@ class CountryAPI extends Controller
             }
             return response()->json(false, 401);
         }
-    
+        
+        return response()->json($country, 200);
     }
 
     /**

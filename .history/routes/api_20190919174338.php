@@ -92,7 +92,7 @@ Route::group(['prefix' => '/v1'], function () {
     Route::post('/register', 'API\UserAPI@register');
     Route::post('/login', 'API\UserAPI@login');
     
-    Route::get('/history','API\HistoryAPI@index');
+    Route::get('/historys','API\HistoryAPI@index');
     //code
 
     Route::get('/code','API\CodeAPI@index');

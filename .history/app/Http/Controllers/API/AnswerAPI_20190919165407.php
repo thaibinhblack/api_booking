@@ -106,7 +106,7 @@ class AnswerAPI extends Controller
             $user = UserModel::where("USER_TOKEN",$request->get("token"));
             if($user)
             {
-                $answer =  AnswerModel::where("UUID_ANWSER",$id)->update([
+                $answer =  AnswerModel::where("UUID_ANSWER",$id)->update([
                     "NAME_ANWSER" => $request->get("NAME_ANWSER")
                 ]);
                 if($answer)
@@ -133,12 +133,12 @@ class AnswerAPI extends Controller
      */
     public function destroy($id,Request $request)
     {
-        if($request->has('token'))
+        f($request->has('token'))
         {
             $user = UserModel::where("USER_TOKEN",$request->get("token"));
             if($user)
-            {   $answer_delete =  AnswerModel::where("UUID_ANWSER",$id)->first();
-                $answer =  AnswerModel::where("UUID_ANWSER",$id)->delete(); 
+            {   $answer_delete =  AnswerModel::where("UUID_ANSWER",$id)->first();
+                $answer =  AnswerModel::where("UUID_ANSWER",$id)->delete()
                 if($answer)
                 {
                     HistoryModel::create([

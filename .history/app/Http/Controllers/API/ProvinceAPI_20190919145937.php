@@ -43,21 +43,7 @@ class ProvinceAPI extends Controller
             $user = UserModel::where("USER_TOKEN",$request->get('api_token'))->first();
             if($user)
             {
-                $province = ProvinceModel::create([
-                    "UUID_PROVINCE" => $request->get("UUID_PROVINCE"),
-                    "NAME_PROVICE" => $request->get("NAME_PROVICE")
-                ]);
-                if($province)
-                {
-                    HistoryModel::create([
-                        "UUID_USER" => $request->get("UUID_USER"),
-                        "UUID_HISTORY" => Str::uuid(),
-                        "NAME_HISTORY" => "Tỉnh / Thành Phố",
-                        "CONTENT_HISTORY" => $user->EMAIL.' thêm thành phố '.$request->get("NAME_PROVICE")
-                    ]);
-                    return response()->json('success', 200);
-                }
-                return response()->json($data, 200, $headers);
+
             }
         }
         $province = ProvinceModel::create($request->all());

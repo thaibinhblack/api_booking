@@ -106,7 +106,7 @@ class AnswerAPI extends Controller
             $user = UserModel::where("USER_TOKEN",$request->get("token"));
             if($user)
             {
-                $answer =  AnswerModel::where("UUID_ANWSER",$id)->update([
+                $answer =  AnswerModel::where("UUID_ANSWER",$id)->update([
                     "NAME_ANWSER" => $request->get("NAME_ANWSER")
                 ]);
                 if($answer)

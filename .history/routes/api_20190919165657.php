@@ -73,8 +73,7 @@ Route::group(['prefix' => '/v1'], function () {
     Route::get('/user/{id}/update','API\UserAPI@update');
     Route::post('/user','API\UserAPI@store');
     Route::get('/user','API\UserAPI@index');
-    Route::post('/user/{id}/delete','API\UserAPI@destroy');
-    // Route::delete('/user/{id}','API\UserAPI@destroy');
+    Route::delete('/user/{id}','API\UserAPI@destroy');
     //question
     Route::get('/question','API\QuestionAPI@index');
     Route::post('/question','API\QuestionAPI@store');
@@ -84,7 +83,7 @@ Route::group(['prefix' => '/v1'], function () {
     Route::get('/answer','API\AnswerAPI@index');
     Route::post('/answer','API\AnswerAPI@store');
     Route::post('/answer/{id}/update','API\AnswerAPI@update');
-    Route::post('/answer/{id}/delete','API\AnswerAPI@delete');
+    Route::get('/answer/{id}/delete','API\AnswerAPI@delete');
     //user question answer 
     Route::get('/user-question/{id}','API\UserQuestionAPI@show');
     Route::post('/user-question','API\UserQuestionAPI@store');

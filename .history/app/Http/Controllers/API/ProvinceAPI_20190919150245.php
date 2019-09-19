@@ -54,10 +54,8 @@ class ProvinceAPI extends Controller
                         "UUID_HISTORY" => Str::uuid(),
                         "NAME_HISTORY" => "Tỉnh / Thành Phố",
                         "CONTENT_HISTORY" => $user->EMAIL.' thêm thành phố '.$request->get("NAME_PROVICE")
-                    ]);
-                    return response()->json('success', 200);
+                    ])
                 }
-                return response()->json($data, 200, $headers);
             }
         }
         $province = ProvinceModel::create($request->all());

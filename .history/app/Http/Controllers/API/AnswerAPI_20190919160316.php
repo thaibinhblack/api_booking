@@ -4,11 +4,11 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\model\CountryModel;
+use App\model\AnswerModel;
 use App\model\UserModel;
 use App\model\HistoryModel;
 use Illuminate\Support\Str;
-class CountryAPI extends Controller
+class AnswerAPI extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +17,13 @@ class CountryAPI extends Controller
      */
     public function index(Request $request)
     {
-        $country = CountryModel::all();
-        return response()->json($country, 200);
+        if($request->has('UUID_QUESTION'))
+        {
+            $answers = AnswerModel::where("UUID_QUESTION",$request->get("UUID_QUESTION"))->get();
+            return response()->json($answers, 200);
+        }
+        $answer = AnswerModel::orderBy('CREATED_AT','asc')->get();
+        return response()->json($answer, 200);
     }
 
     /**
@@ -41,21 +46,21 @@ class CountryAPI extends Controller
     {
         if($request->has('api_token'))
         {
-            $user = UserModel::where("USER_TOKEN",$request->get("api_token"))->first();
+            $user = UserModel::where("USER_TOKEN",$request->get('api_token'))->first();
             if($user)
             {
-                $country = CountryModel::create([
-                    "UUID_COUNTRY" => $request->get("UUID_COUNTRY"),
-                    "UUID_PROVINCE" => $request->get("UUID_PROVINCE"),
-                    "NAME_COUNTRY" => $request->get("NAME_COUNTRY")
+                $answer = AnswerModel::create([
+                    "UUID_ANWSER" => Str::uuid(),
+                    "UUID_QUESTION" => $request->get("UUID_QUESTION"),
+                    "NAME_ANWSER" => $request->GET("NAME_ANWSER")
                 ]);
-                if($country)
+                if($answer)
                 {
                     HistoryModel::create([
                         "UUID_USER" => $user->UUID_USER,
                         "UUID_HISTORY" => Str::uuid(),
-                        "NAME_HISTORY" => "country",
-                        "CONTENT_HISTORY" => $user->EMAIL.' thêm quận/huyện '.$request->get("NAME_COUNTRY")
+                        "NAME_HISTORY" => "anwser",
+                        "CONTETN_HISTORY" => $user->EMAIL.' tạo câu trả lời '.$request->GET("NAME_ANWSER")
                     ]);
                     return response()->json('success', 200);
                 }
@@ -63,7 +68,8 @@ class CountryAPI extends Controller
             }
             return response()->json(false, 401);
         }
-    
+        $answer = AnswerModel::create($request->all());
+        return response()->json($answer, 200);
     }
 
     /**
@@ -72,13 +78,9 @@ class CountryAPI extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id,Request $request)
+    public function show($id)
     {
-        if($request->has('type'))
-        {
-            $country = CountryModel::where($request->get('type'),$id)->get();
-            return response()->json($country, 200);
-        }
+        //
     }
 
     /**
@@ -101,28 +103,8 @@ class CountryAPI extends Controller
      */
     public function update(Request $request, $id)
     {
-        if($request->has("api_token"))
-        {
-            $user = UserModel::where("USER_TOKEN",$request->get("api_token"))->first();
-            if($user)
-            {
-                $country = CountryModel::where('UUID_COUNTRY',$id)->update([
-                    'NAME_COUNTRY' => $request->get('NAME_COUNTRY')
-                ]);
-                if($country)
-                {
-                    HistoryModel::create([
-                        "UUID_USER" => $user->UUID_USER,
-                        "UUID_HISTORY" => Str::uuid(),
-                        "NAME_HISTORY" => "country",
-                        "CONTENT_HISTORY" => $user->EMAIL.' cập nhật quận / huyện '.$request->get("NAME_COUNTRY")
-                    ]);
-                    return response()->json('success', 200);
-                }
-                return response()->json(false, 400);
-            }
-            return response()->json(false, 401);
-        }
+        $answer = AnswerModel::where("UUID_ANSWER",$id)->update($request->all());
+        return response()->json($answer, 200);
     }
 
     /**

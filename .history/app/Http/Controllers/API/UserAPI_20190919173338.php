@@ -211,7 +211,7 @@ class UserAPI extends Controller
     public function login(Request $request)
     {
         $user = UserModel::where('EMAIL',$request->get("EMAIL"))->first();
-        
+        return response()->json($user, 200);
         if($user)
         {   
             if(Hash::check($request->get("PASSWORD"), $user["PASSWORD"]))

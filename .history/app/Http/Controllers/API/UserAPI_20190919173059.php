@@ -211,9 +211,8 @@ class UserAPI extends Controller
     public function login(Request $request)
     {
         $user = UserModel::where('EMAIL',$request->get("EMAIL"))->first();
-        
         if($user)
-        {   
+        {   return response()->json($user, 200);
             if(Hash::check($request->get("PASSWORD"), $user["PASSWORD"]))
             {
                 $token = JWTAuth::fromUser($user);

@@ -73,8 +73,8 @@ Route::group(['prefix' => '/v1'], function () {
     Route::get('/user/{id}/update','API\UserAPI@update');
     Route::post('/user','API\UserAPI@store');
     Route::get('/user','API\UserAPI@index');
-    Route::post('/user/{id}/delete','API\UserAPI@destroy');
-    // Route::delete('/user/{id}','API\UserAPI@destroy');
+    Route::post('/user/{id}/delete','API\UserAPI@destroy')
+    Route::delete('/user/{id}','API\UserAPI@destroy');
     //question
     Route::get('/question','API\QuestionAPI@index');
     Route::post('/question','API\QuestionAPI@store');

@@ -39,31 +39,8 @@ class CountryAPI extends Controller
      */
     public function store(Request $request)
     {
-        if($request->has('api_token'))
-        {
-            $user = UserModel::where("USER_TOKEN",$request->get("api_token"))->first();
-            if($user)
-            {
-                $country = CountryModel::create([
-                    "UUID_COUNTRY" => $request->get("UUID_COUNTRY"),
-                    "UUID_PROVINCE" => $request->get("UUID_PROVINCE"),
-                    "NAME_COUNTRY" => $request->get("NAME_COUNTRY")
-                ]);
-                if($country)
-                {
-                    HistoryModel::create([
-                        "UUID_USER" => $user->UUID_USER,
-                        "UUID_HISTORY" => Str::uuid(),
-                        "NAME_HISTORY" => "country",
-                        "CONTENT_HISTORY" => $user->EMAIL.' thêm quận/huyện '.$request->get("NAME_COUNTRY")
-                    ]);
-                    return response()->json('success', 200);
-                }
-                return response()->json(false, 400);
-            }
-            return response()->json(false, 401);
-        }
-    
+        $country = CountryModel::create($request->all());
+        return response()->json($country, 200);
     }
 
     /**

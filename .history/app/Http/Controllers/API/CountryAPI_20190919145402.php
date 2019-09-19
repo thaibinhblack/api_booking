@@ -55,7 +55,7 @@ class CountryAPI extends Controller
                         "UUID_USER" => $user->UUID_USER,
                         "UUID_HISTORY" => Str::uuid(),
                         "NAME_HISTORY" => "country",
-                        "CONTENT_HISTORY" => $user->EMAIL.' thêm quận/huyện '.$request->get("NAME_COUNTRY")
+                        "COUNTENT_HISTORY" => $user->EMAIL.' thêm quận/huyện '.$request->get("NAME_COUNTRY")
                     ]);
                     return response()->json('success', 200);
                 }

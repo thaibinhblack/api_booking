@@ -14,7 +14,7 @@ class HistoryAPI extends Controller
      */
     public function index()
     {
-        $history = HistoryModel::all();
+        $history = HistoryModel::all()
         return response()->json($history, 200);
     }
 
